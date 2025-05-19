@@ -2,6 +2,9 @@
 
 A comprehensive toolkit for creating elegant and on-brand animations of the Polkadot ecosystem using Manim. This toolkit provides reusable components and helper functions to create consistent, professional-quality animations.
 
+## Current Demo
+ [Demo](https://youtu.be/lQP7AkVDR5Y)
+
 ## Features
 
 - **Official Brand Elements**: Uses the official Polkadot colors and Unbounded font
