@@ -355,6 +355,32 @@ badge = dot.make_badge_from_registry("moonbeam", layout="vertical", max_width=2.
 
 Place logos under `assets/` or use absolute paths. The default fallback uses `assets/polkadot-logo.svg` bundled in this repo.
 
+### Contributing to Chain Registry
+
+To add a new chain to `chains.json`:
+
+1. **Find the official brand colors**: Check the chain's official website or brand guidelines
+2. **Add chain logos** (optional): Place SVG/PNG logos in the `assets/` folder
+3. **Add entry to chains.json**:
+   ```json
+   "chain-id": {
+     "name": "Chain Name",
+     "logo": "assets/chain-logo.svg",
+     "color": "#HEXCOLOR"
+   }
+   ```
+4. **Use lowercase chain ID**: Use lowercase chain identifiers for consistency (e.g., "moonbeam", "astar")
+5. **Test your changes**: Ensure the registry loads correctly:
+   ```python
+   import dotmotion as dot
+   registry = dot.load_chain_registry()
+   badge = dot.make_badge_from_registry("your-chain-id")
+   ```
+
+**Helpful Resources**:
+- Polkadot Parachains: [https://polkadot.network/ecosystem/parachains/](https://polkadot.network/ecosystem/parachains/)
+- Kusama Parachains: [https://kusama.network/parachains/](https://kusama.network/parachains/)
+
 ## Color Palette
 
 The toolkit includes the official Polkadot color palette:
