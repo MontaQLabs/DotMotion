@@ -45,3 +45,7 @@ venv.bak/
 # OS specific
 .DS_Store
 Thumbs.db 
+
+# audio
+.dotmotion_media/
+.dotmotion_seq/

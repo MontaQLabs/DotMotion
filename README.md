@@ -11,6 +11,7 @@ A comprehensive toolkit for creating elegant and on-brand animations of the Polk
 - **Ecosystem Components**: Ready-made components for relay chains, parachains, validators, etc.
 - **Animation Helpers**: Helper functions for common animation sequences
 - **Text Management**: Built-in solutions to prevent text overlapping with animations
+- **Assets Support**: Load and place SVGs and raster logos/images easily
 - **Customizable**: All components are fully customizable to fit your needs
 
 ## Installation
@@ -85,8 +86,15 @@ The toolkit uses the Unbounded font, which is Polkadot's official font. To ensur
   # Copy fonts from fonts/unbounded to C:\Windows\Fonts
   ```
 
-- **Option 2**: Use the included fallback
-  If you don't install the font, the toolkit will automatically fall back to Helvetica Neue, which still looks good.
+- **Option 2**: Auto-register bundled Unbounded (no system install)
+  The library attempts to auto-register `fonts/unbounded/*.ttf` at runtime via Pango. If that fails or fonts aren't present, it falls back to Helvetica Neue → Helvetica → Arial.
+
+You can also set a custom font chain at runtime:
+
+```python
+import dotmotion as dot
+dot.set_brand_font(preferred="Unbounded", fallbacks=["Helvetica Neue", "Arial"])  # optional
+```
 
 ## Quick Start Guide
 
@@ -197,6 +205,11 @@ class PolkadotDemo(Scene):
         
         # Connect parachain to relay
         self.play(*relay.connect_parachain(para, animate=True))
+
+        # Add a Polkadot logo from assets (SVG or PNG)
+        logo = dot.load_logo("assets/polkadot-logo.svg", width=1.6)
+        logo.next_to(para, UP, buff=0.4)
+        self.play(dot.FadeIn(logo))
 ```
 
 ### Running the Demo
@@ -279,6 +292,23 @@ def display_text_with_background(self, text, position=None, font_size=24,
         self.play(FadeOut(screen_dim))
 ```
 
+### Non-overlapping Text Helpers
+
+To avoid text overlapping with diagrams, use `display_text_safely`, which tries multiple safe placements automatically:
+
+```python
+import dotmotion as dot
+
+# Avoid overlapping with provided objects (e.g., relay, parachains, logos)
+avoid = [relay, para, logo]
+dot.display_text_safely(self,
+                        "Cross-chain messaging connects parachains",
+                        avoid=avoid,
+                        position="bottom",   # bottom/top/left/right/center/auto
+                        font_size=28,
+                        bg=True)              # background for readability
+```
+
 ## Available Components
 
 - `PolkadotRelay`: The central relay chain
@@ -288,6 +318,42 @@ def display_text_with_background(self, text, position=None, font_size=24,
 - `Block`: Block representation for blockchain animations
 - `XCMMessage`: Cross-chain messaging representation
 - `GovernanceSystem`: Governance visualization components
+
+## Demos and Examples
+
+Run the examples directly with Manim after installing this package (via `uv` or `pip`). These commands render preview-quality videos and open them on completion.
+
+```bash
+# Cinematic architecture overview (from examples)
+manim -pqm examples/dotmotion_demo.py PolkadotOverview
+
+# 90s pitch video
+manim -pqm examples/dotmotion_pitch.py DotmotionPitch
+
+# Pitch video with timeline capture (saves captions JSON)
+manim -pqm examples/dotmotion_pitch_clock.py DotmotionPitchClock
+
+# One-minute demo
+manim -pqm examples/one_min_demo.py OneMinutePolkadot
+```
+
+Example outputs are written under `media/videos/...` following Manim's default structure. The repo already includes some rendered videos under `media/videos/` for reference.
+
+## Chain Registry and Badges
+
+You can theme chain visuals from a simple JSON registry (`chains.json` at repo root by default). Each entry may include `name`, `logo`, and `color`.
+
+```python
+import dotmotion as dot
+
+registry = dot.load_chain_registry()  # reads chains.json by default
+name, logo_path, color = dot.get_chain_theme("moonbeam", registry) or ("Moonbeam", None, dot.POLKADOT_CYAN)
+
+# Create a ready-to-use badge (logo + label + underline), auto-fitted
+badge = dot.make_badge_from_registry("moonbeam", layout="vertical", max_width=2.6)
+```
+
+Place logos under `assets/` or use absolute paths. The default fallback uses `assets/polkadot-logo.svg` bundled in this repo.
 
 ## Color Palette
 
@@ -322,6 +388,56 @@ If you experience text overlapping with animations:
 1. Implement the phase-based approach (show text, clear, then show animation)
 2. Ensure text stays within screen boundaries by using `scale_to_fit_width`
 3. Use `smooth_clear()` to transition between different sections
+
+### Narration, Subtitles, and Background Music
+
+This toolkit includes helpers to narrate existing renders and add subtitles/music using FFmpeg and optional gTTS.
+
+- **Generate a pitch video**, then produce narration from a captions JSON/CSV:
+
+```bash
+# 1) Render the base video (no audio)
+manim -pql examples/dotmotion_pitch.py DotmotionPitch
+
+# 2) Create narration and optional BGM from provided templates
+python examples/narrate_manual.py
+```
+
+- **Capture captions automatically during a render** using a playback clock:
+
+```bash
+manim -pqm examples/dotmotion_pitch_clock.py DotmotionPitchClock
+# Captions saved to: media/videos/dotmotion_pitch/480p15/captions_from_clock.json
+```
+
+- **Use the helpers programmatically**:
+
+```python
+import dotmotion as dot
+
+# Build captions list: [(start_s, end_s, text), ...]
+captions = [(0.0, 1.2, "Intro"), (1.3, 3.0, "Relay chain"), (3.1, 5.0, "Parachains")]
+
+# Narrate and mux into an existing video; optionally burn subtitles
+out = dot.narrate_from_captions(
+    input_video="media/videos/dotmotion_pitch/480p15/DotmotionPitch.mp4",
+    captions=captions,
+    output_video="media/videos/dotmotion_pitch/480p15/DotmotionPitch_manual_narrated.mp4",
+    burn_subtitles=False,
+)
+
+# Mix background music under the narrated video
+dot.narrate_with_bgm(
+    input_video="media/videos/dotmotion_pitch/480p15/DotmotionPitch.mp4",
+    captions=captions,
+    music_path="assets/bgm.mp3",
+    output_video="media/videos/dotmotion_pitch/480p15/DotmotionPitch_manual_narrated_bgm.mp4",
+    burn_subtitles=False,
+    music_db=-22.0,
+)
+```
+
+These helpers use `ffmpeg` and optionally `gTTS`; install them if you plan to use narration/music features.
 
 ## License
 

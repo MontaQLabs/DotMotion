@@ -1,0 +1,18 @@
+{
+  "mythos": {
+    "name": "Mythos",
+    "logo": "assets/polkadot-logo.svg",
+    "color": "#E40C5B"
+  },
+  "moonbeam": {
+    "name": "Moonbeam",
+    "logo": "assets/polkadot-logo.svg",
+    "color": "#07FFFF"
+  },
+  "hydration": {
+    "name": "Hydration",
+    "logo": "assets/polkadot-logo.svg",
+    "color": "#7916F3"
+  }
+}
+
