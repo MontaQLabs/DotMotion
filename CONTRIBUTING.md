@@ -7,6 +7,28 @@ Thank you for considering a contribution! This guide helps you set up a dev envi
 - Use Python 3.9+.
 - We recommend `uv` for environment and dependency management, but `pip` works too.
 
+### Prerequisites
+
+Before you can install the project, you need the necessary system libraries for our dependencies.
+
+**On macOS (using Homebrew):**
+```bash
+brew install cairo pkg-config
+```
+
+On Debian/Ubuntu Linux:
+```bash
+sudo apt-get install libcairo2-dev pkg-config
+```
+
+On Fedora/CentOS Linux:
+```bash
+sudo dnf install cairo-devel pkg-config
+```
+
+### Installation
+
+Now you can clone the repository and install the Python packages.
 ```bash
 # Clone
 git clone https://github.com/MontaQLabs/DotMotion.git
