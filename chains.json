@@ -1,4 +1,14 @@
 {
+  "polkadot": {
+    "name": "Polkadot",
+    "logo": "assets/polkadot-logo.svg",
+    "color": "#E6007A"
+  },
+  "kusama": {
+    "name": "Kusama",
+    "logo": "assets/polkadot-logo.svg",
+    "color": "#000000"
+  },
   "mythos": {
     "name": "Mythos",
     "logo": "assets/polkadot-logo.svg",
@@ -9,10 +19,61 @@
     "logo": "assets/polkadot-logo.svg",
     "color": "#07FFFF"
   },
+  "moonriver": {
+    "name": "Moonriver",
+    "logo": "assets/polkadot-logo.svg",
+    "color": "#F2B705"
+  },
   "hydration": {
     "name": "Hydration",
     "logo": "assets/polkadot-logo.svg",
     "color": "#7916F3"
+  },
+  "astar": {
+    "name": "Astar",
+    "logo": "assets/polkadot-logo.svg",
+    "color": "#0AE2FF"
+  },
+  "acala": {
+    "name": "Acala",
+    "logo": "assets/polkadot-logo.svg",
+    "color": "#E40C5B"
+  },
+  "phala": {
+    "name": "Phala Network",
+    "logo": "assets/polkadot-logo.svg",
+    "color": "#CDFA50"
+  },
+  "bifrost": {
+    "name": "Bifrost",
+    "logo": "assets/polkadot-logo.svg",
+    "color": "#5A25F0"
+  },
+  "interlay": {
+    "name": "Interlay",
+    "logo": "assets/polkadot-logo.svg",
+    "color": "#3E96FF"
+  },
+  "centrifuge": {
+    "name": "Centrifuge",
+    "logo": "assets/polkadot-logo.svg",
+    "color": "#2762FF"
+  },
+  "zeitgeist": {
+    "name": "Zeitgeist",
+    "logo": "assets/polkadot-logo.svg",
+    "color": "#E4FF07"
+  },
+  "parallel": {
+    "name": "Parallel",
+    "logo": "assets/polkadot-logo.svg",
+    "color": "#FF4B8B"
+  },
+  "nodle": {
+    "name": "Nodle",
+    "logo": "assets/polkadot-logo.svg",
+    "color": "#00D4A7"
   }
 }
+
 
